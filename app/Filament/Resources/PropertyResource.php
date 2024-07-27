@@ -370,10 +370,10 @@ class PropertyResource extends Resource
                         ->schema([
                             RepeatableEntry::make('property_images')
                                 ->schema([
-                                    TextEntry::make('image_url')
+                                    ImageEntry::make('image_url')
                                     ->label('Image URL (Debug)')
                                     ->columnSpanFull()
-                                        //->disk('public')
+                                        ->disk('public/storage')
                                         //->size(200)
                                         //->extraImgAttributes(['alt' => 'Property Image']),
                                 ]),
