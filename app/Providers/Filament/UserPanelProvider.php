@@ -27,7 +27,17 @@ class UserPanelProvider extends PanelProvider
             ->id('user')
             ->path('user')
             ->login()
-            ->registration( Register::class)
+            ->brandName('Bosque Properti')
+            ->brandLogo(asset('images/logo.png'))
+            ->darkModeBrandLogo(asset('images/dark-logo.png'))
+            ->brandLogoHeight('4rem')
+            ->unsavedChangesAlerts()
+            ->favicon(asset('images/favicon.png'))
+
+            ->passwordReset()
+            ->emailVerification()
+            ->profile(isSimple: false)
+            ->registration(Register::class)
             ->colors([
                 'primary' => Color::Green,
             ])
@@ -39,7 +49,7 @@ class UserPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/User/Widgets'), for: 'App\\Filament\\User\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                //Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

@@ -24,7 +24,7 @@ class Register extends AuthRegister
                 $this->getPasswordFormComponent(),
                 $this->getPasswordConfirmationFormComponent(),
 
-                Select::make('role')->default('customer')->options(["superadmin" => "Super Admin", "admin" => "Admin", "operator" => "Operator", "customer" => "Customer"]),
+                #Select::make('role')->default('customer')->options(["superadmin" => "Super Admin", "admin" => "Admin", "operator" => "Operator", "customer" => "Customer"]),
             ])
             ->statePath('data');
 
