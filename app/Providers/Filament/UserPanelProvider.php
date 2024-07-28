@@ -33,7 +33,7 @@ class UserPanelProvider extends PanelProvider
             ->brandLogoHeight('4rem')
             ->unsavedChangesAlerts()
             ->favicon(asset('images/favicon.png'))
-
+            ->authGuard('web')
             ->passwordReset()
             ->emailVerification()
             ->profile(isSimple: false)

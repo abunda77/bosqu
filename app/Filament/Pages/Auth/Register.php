@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages\Auth;
 
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -23,6 +24,10 @@ class Register extends AuthRegister
                 $this->getEmailFormComponent(),
                 $this->getPasswordFormComponent(),
                 $this->getPasswordConfirmationFormComponent(),
+                TextInput::make('role')
+                ->default('customer')
+                ->readOnly('customer'),
+
 
                 #Select::make('role')->default('customer')->options(["superadmin" => "Super Admin", "admin" => "Admin", "operator" => "Operator", "customer" => "Customer"]),
             ])
