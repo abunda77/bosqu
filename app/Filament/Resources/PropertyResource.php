@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Property;
+use App\Models\PropertyImage;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Support\RawJs;
@@ -350,36 +351,58 @@ class PropertyResource extends Resource
     return $infolist
         ->schema([
             Tabs::make('Tabs')
+                ->columnSpan('full')
 
                 ->tabs([
                     Tabs\Tab::make('Info')
+                        ->icon('heroicon-m-home')
                         ->schema([
-                            TextEntry::make('title'),
-                            TextEntry::make('short_desc'),
-                            TextEntry::make('description'),
+                            TextEntry::make('title')
+                            ->label('Judul Iklan')
+                            ->color('primary'),
+                            TextEntry::make('category.name_category')
+                            ->label('Category')
+                            ->color('primary'),
+                            TextEntry::make('short_desc')
+                            ->label('Short Description')
+                            ->color('primary'),
+                            TextEntry::make('description')
+                            ->label('Deskripsi')
+                            //->color('primary')
+                            ->markdown(),
                             TextEntry::make('price')
                                 ->label('Harga')
                                 ->prefix('Rp.')
                                 ->color('primary')
                                 ->numeric(decimalPlaces: 0),
-                            TextEntry::make('address'),
+                            TextEntry::make('address')
+                            ->color('primary'),
+                            TextEntry::make('created_at')
+                            ->color('info')
+                            ->dateTime(),
+                            TextEntry::make('updated_at')
+                            ->color('info')
+                            ->dateTime(),
                         ])
                         ->columns(2),
 
                     Tabs\Tab::make('Images')
+                        ->icon('heroicon-m-photo')
                         ->schema([
                             RepeatableEntry::make('property_images')
+                            ->label('Image URL (Debug)')
                                 ->schema([
                                     ImageEntry::make('image_url')
-                                    ->label('Image URL (Debug)')
+
                                     ->columnSpanFull()
-                                        ->disk('public/storage')
-                                        //->size(200)
+                                        //->disk('public')
+                                        ->size(200)
                                         //->extraImgAttributes(['alt' => 'Property Image']),
                                 ]),
                         ]),
 
                     Tabs\Tab::make('Specification')
+                        ->icon('heroicon-m-tag')
                         ->schema([
                             TextEntry::make('specification.land_size')
                                 ->label('Luas Tanah')
@@ -411,6 +434,7 @@ class PropertyResource extends Resource
                         ->columns(2),
 
                     Tabs\Tab::make('Facility')
+                        ->icon('heroicon-c-clipboard-document-list')
                         ->schema([
                             TextEntry::make('facility.certificate')
                                 ->label('Sertificate')
