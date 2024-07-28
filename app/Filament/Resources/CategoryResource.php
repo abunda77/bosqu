@@ -19,6 +19,13 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Filament\Resources\UserResource\RelationManagers\PropertiesRelationManager;
 
+use App\Enums\PropertyCategory; // Pastikan path ini sesuai dengan lokasi file enum Anda
+
+use Filament\Support\Contracts\HasLabel;
+
+
+
+
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
@@ -60,10 +67,35 @@ class CategoryResource extends Resource
             ->columns([
                 //
                 Tables\Columns\TextColumn::make('name_category')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
-                    ->searchable(),
+                ->badge()
+                ->searchable()
+                //->formatStateUsing(fn (PropertyCategory $state): string => $state->getLabel()),
+                ->label('Name Category')
+                ->getStateUsing(function ($record) {
+                    $labels = [
+                        'home' => 'Rumah',
+                        'warehouse' => 'Gudang',
+                        'apartement' => 'Apartemen',
+                        'homeshop' => 'Ruko',
+                        'kavling' => 'Kavling',
+                        'office' => 'Kantor',
+                    ];
+
+                    return $labels[$record->name_category ?? $record->name_category];
+                })
+                ->color(fn (string $state): string => match ($state) {
+                    'Rumah' => 'success',
+                    'Gudang' => 'danger',
+                    'Apartemen' => 'warning',
+                    'Ruko' => 'info',
+                    'Kavling' => 'primary',
+                    'Kantor' => 'gray',
+                    default => 'default',
+                }),
+                //->formatStateUsing(fn (PropertyCategory $state): string => $state->getLabel()),
+
                 Tables\Columns\ImageColumn::make('icon_url')
+                ->label('Icon')
                     ->circular()
                     ->placeholder('empty')
             ])
@@ -99,4 +131,5 @@ class CategoryResource extends Resource
         {
             return static::getModel()::count();
         }
+
 }
