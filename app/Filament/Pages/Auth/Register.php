@@ -2,16 +2,22 @@
 
 namespace App\Filament\Pages\Auth;
 
+use App\Models\User;
+use Filament\Forms\Form;
+use Filament\Pages\Page;
+use App\Events\UserRegistered;
+use function Laravel\Prompts\form;
+use Illuminate\Support\Facades\Hash;
+
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Pages\Auth\Register as AuthRegister;
-use Filament\Pages\Page;
+use Filament\Notifications\Notification;
+use Filament\Pages\Auth\Register as BaseRegister;
+use Filament\Http\Responses\Auth\Contracts\RegistrationResponse;
 
-use function Laravel\Prompts\form;
 
-class Register extends AuthRegister
+class Register extends BaseRegister
 {
     // protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
@@ -32,9 +38,55 @@ class Register extends AuthRegister
                 #Select::make('role')->default('customer')->options(["superadmin" => "Super Admin", "admin" => "Admin", "operator" => "Operator", "customer" => "Customer"]),
             ])
             ->statePath('data');
+            $data = $this->form->getState();
+
+                $user = User::create([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'password' => Hash::make($data['password']),
+                    'role' => $data['role'],
+                ]);
+        event(new UserRegistered($user));
+
+        $this->sendEmailVerificationNotification($user);
+
+        Notification::make()
+            ->title('Registration successful')
+            ->success()
+            ->send();
+
+        return app(RegistrationResponse::class);
 
     }
 
+    // public function register(): ?RegistrationResponse
+    // {
+    //     $data = $this->form->getState();
 
+    //     $user = User::create([
+    //         'name' => $data['name'],
+    //         'email' => $data['email'],
+    //         'password' => Hash::make($data['password']),
+    //         'role' => $data['role'],
+    //     ]);
 
+    //     event(new UserRegistered($user));
+
+    //     $this->sendEmailVerificationNotification($user);
+
+    //     Notification::make()
+    //         ->title('Registration successful')
+    //         ->success()
+    //         ->send();
+
+    //     return app(RegistrationResponse::class);
+    // }
+
+    // protected function sendEmailVerificationNotification(User $user): void
+    // {
+    //     if (config('filament.auth.email_verification', false)) {
+    //         $user->sendEmailVerificationNotification();
+    //     }
+    // }
 }
+

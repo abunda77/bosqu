@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use App\Events\UserRegistered;
+use App\Listeners\SendWelcomeEmail;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,4 +25,9 @@ class AppServiceProvider extends ServiceProvider
         //
         Model::unguard();
     }
+    protected $listen = [
+        UserRegistered::class => [
+            SendWelcomeEmail::class,
+        ],
+    ];
 }

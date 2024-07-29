@@ -2,28 +2,29 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Pages\Auth\Register;
-use Filament\Http\Middleware\Authenticate;
-use Filament\Http\Middleware\DisableBladeIconComponents;
-use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
-use Filament\Pages\Auth\EditProfile;
 use Filament\Panel;
+use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets;
-use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Filament\Pages\Auth\EditProfile;
+use App\Filament\Pages\Auth\Register;
+use Filament\Http\Livewire\Auth\Login;
+use Filament\Http\Middleware\Authenticate;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Filament\Pages\Auth\PasswordReset\ResetPassword;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
-use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Filament\Pages\Auth\Login;
+use Filament\Http\Middleware\DisableBladeIconComponents;
+use Filament\Http\Middleware\DispatchServingFilamentEvent;
+#use Filament\Pages\Auth\Register;
 
-use Filament\Pages\Auth\EmailVerification\EmailVerificationPrompt;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Filament\Pages\Auth\PasswordReset\RequestPasswordReset;
-use Filament\Pages\Auth\PasswordReset\ResetPassword;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Filament\Pages\Auth\EmailVerification\EmailVerificationPrompt;
 
 
 class UserPanelProvider extends PanelProvider

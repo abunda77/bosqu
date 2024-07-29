@@ -1,5 +1,11 @@
 <?php
 
+use Filament\Panel\Concerns\HasAuth;
+
+use App\Filament\Pages\Auth\Register;
+use App\Filament\Pages\DashboardPage;
+use Filament\Pages\Auth\EmailVerification\EmailVerificationPrompt;
+
 return [
 
     /*
@@ -84,5 +90,13 @@ return [
     */
 
     'livewire_loading_delay' => 'default',
+
+    'auth' => [
+        'guard' => 'web',
+    'pages' => [
+        
+        //'login' => EmailVerificationPrompt::class,
+    ],
+],
 
 ];
