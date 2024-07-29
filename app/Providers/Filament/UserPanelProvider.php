@@ -7,6 +7,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
+use Filament\Pages\Auth\EditProfile;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -18,6 +19,12 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Pages\Auth\Login;
+
+use Filament\Pages\Auth\EmailVerification\EmailVerificationPrompt;
+use Filament\Pages\Auth\PasswordReset\RequestPasswordReset;
+use Filament\Pages\Auth\PasswordReset\ResetPassword;
+
 
 class UserPanelProvider extends PanelProvider
 {
@@ -31,13 +38,18 @@ class UserPanelProvider extends PanelProvider
             ->brandLogo(asset('images/logo.png'))
             ->darkModeBrandLogo(asset('images/dark-logo.png'))
             ->brandLogoHeight('4rem')
-            ->unsavedChangesAlerts()
+            //->unsavedChangesAlerts()
             ->favicon(asset('images/favicon.png'))
             ->authGuard('web')
-            ->passwordReset()
-            ->emailVerification()
-            ->profile(isSimple: false)
+            ->authPasswordBroker('users')
+            ->passwordReset(RequestPasswordReset::class)
+            //->spa()
+
+
+            ->emailVerification(EmailVerificationPrompt::class)
+            ->profile(EditProfile::class)
             ->registration(Register::class)
+            //->registration()
             ->colors([
                 'primary' => Color::Green,
             ])
