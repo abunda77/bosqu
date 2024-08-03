@@ -6,8 +6,12 @@ use App\Livewire\UserLogin;
 use App\Livewire\AboutUs;
 use App\Livewire\ContactUs;
 
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/user');
 });
 
 Route::get('/customerlogin', UserLogin::class)->name('customerlogin');

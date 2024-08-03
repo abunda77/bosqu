@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Pages\Auth;
 use Exception;
 use Filament\Facades\Filament;

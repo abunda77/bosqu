@@ -22,7 +22,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 #use Filament\Pages\Auth\Register;
 
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
-#use Filament\Pages\Auth\PasswordReset\RequestPasswordReset;
+//use Filament\Pages\Auth\PasswordReset\RequestPasswordReset;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Filament\Pages\Auth\EmailVerification\EmailVerificationPrompt;
 use App\Filament\Pages\Auth\RequestPasswordReset;
