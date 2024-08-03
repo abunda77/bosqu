@@ -8,17 +8,17 @@ use App\Enums\PropertyCategory; // Pastikan untuk mengimpor enum PropertyCategor
 
 class Category extends Model
 {
-    
+
     use HasFactory;
-    
-    protected function casts(): array
-    {
-        return [
-            'name_category' => 'PropertyCategory::class',
-        ];
-    }
-    
-    
+
+    // protected function casts(): array
+    // {
+    //     return [
+    //         'name_category' => 'PropertyCategory::class',
+    //     ];
+    // }
+
+
     protected $fillable = ['name_category', 'slug','icon_url'];
 
     public function properties()
