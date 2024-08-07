@@ -47,8 +47,8 @@ class UserPanelProvider extends PanelProvider
             ->passwordReset(RequestPasswordReset::class)
             //->spa()
 
-
-            ->emailVerification(EmailVerificationPrompt::class)
+            ->emailVerification()
+            //->emailVerification(EmailVerificationPrompt::class)
             ->profile(EditProfile::class)
             ->registration(Register::class)
             //->registration()
