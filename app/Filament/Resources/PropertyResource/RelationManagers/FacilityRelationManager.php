@@ -42,12 +42,15 @@ class FacilityRelationManager extends RelationManager
                     ->required()
                     ->label('Jalur Telepon'),
                 Forms\Components\TextInput::make('internet')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->required(),
                 Forms\Components\TextInput::make('road_width')
                     ->maxLength(255)
                     ->suffix('meter')
+                    ->required()
                     ->label('Lebar Jalan (meter)'),
                 Forms\Components\TextInput::make('water_source')
+                    ->required()
                     ->label('Sumber Air')
                     ->maxLength(255),
             ]);
