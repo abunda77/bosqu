@@ -14,14 +14,23 @@ class ImagesRelationManager extends RelationManager
 {
     protected static string $relationship = 'images';
 
+    protected $casts = [
+        'image_url' => 'array',
+    ];
+
     public function form(Form $form): Form
     {
+
         return $form
             ->schema([
                 Forms\Components\FileUpload::make('image_url')
                     ->required()
-                    ->optimize('webp'),
-                    //->multiple(),
+                    // ->multiple(true)
+                    ->optimize('webp')
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->default([])
+                    // ->rules(['array'])
+                    ->maxSize(2048),
                 Forms\Components\Toggle::make('is_primary')
                     ->required(),
             ]);
@@ -37,6 +46,8 @@ class ImagesRelationManager extends RelationManager
                 Tables\Columns\ImageColumn::make('image_url'),
                 Tables\Columns\IconColumn::make('is_primary')
                     ->boolean(),
+                Tables\Columns\ToggleColumn::make('is_primary')
+
             ])
             ->filters([
                 //
