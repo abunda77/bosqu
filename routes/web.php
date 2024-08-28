@@ -10,9 +10,9 @@ use App\Livewire\ContactUs;
 //     return view('welcome');
 // });
 
-Route::get('/', function () {
-    return redirect('/user');
-});
+// Route::get('/', function () {
+//     return redirect('/user');
+// });
 
 Route::get('/customerlogin', UserLogin::class)->name('customerlogin');
 Route::get('/about', AboutUs::class)->name('aboutus');

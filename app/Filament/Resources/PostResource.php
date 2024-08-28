@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\RichEditor;
+use App\Filament\Resources\PostResource\Api\Transformers\PostTransformer;
 
 class PostResource extends Resource
 {
@@ -29,11 +30,11 @@ class PostResource extends Resource
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255)
-                    ->reactive() // Membuat field reaktif untuk memperbarui field lain berdasarkan nilainya
+                    ->reactive()
                     ->afterStateUpdated(function ($state, callable $set) {
-                        // Secara otomatis mengatur field slug berdasarkan input title
                         $set('slug', \Illuminate\Support\Str::slug($state));
-                    }),
+                    })
+                    ->debounce(1000),
                 Forms\Components\TextInput::make('slug')
                     ->required()
                     ->maxLength(255)
@@ -129,5 +130,10 @@ class PostResource extends Resource
             'create' => Pages\CreatePost::route('/create'),
             'edit' => Pages\EditPost::route('/{record}/edit'),
         ];
+    }
+
+    public static function getApiTransformer()
+    {
+        return PostTransformer::class;
     }
 }

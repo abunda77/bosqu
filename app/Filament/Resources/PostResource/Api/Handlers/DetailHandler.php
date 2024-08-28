@@ -8,10 +8,12 @@ use Rupadana\ApiService\Http\Handlers;
 use Spatie\QueryBuilder\QueryBuilder;
 use Illuminate\Http\Request;
 
+
 class DetailHandler extends Handlers
 {
     public static string | null $uri = '/{id}';
     public static string | null $resource = PostResource::class;
+    public static bool $public = true;
 
 
     public function handler(Request $request)

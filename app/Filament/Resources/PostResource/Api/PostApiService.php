@@ -10,6 +10,7 @@ class PostApiService extends ApiService
 {
     protected static string | null $resource = PostResource::class;
 
+
     public static function handlers() : array
     {
         return [
