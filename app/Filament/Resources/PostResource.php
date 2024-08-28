@@ -39,11 +39,32 @@ class PostResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->disabled(),
-                Forms\Components\FileUpload::make('feature_image')
-                    ->required()
-                    ->optimize('webp')
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                    ->maxSize(2048),
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Radio::make('feature_image_type')
+                            ->label('Jenis Gambar Fitur')
+                            ->options([
+                                'upload' => 'Unggah Gambar',
+                                'url' => 'Masukkan URL',
+                            ])
+                            ->required()
+                            ->inline()
+                            ->default('upload'),
+                        Forms\Components\FileUpload::make('feature_image')
+                            ->label('Unggah Gambar')
+                            ->image()
+                            ->imageEditor()
+                            ->required()
+                            ->optimize('webp')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->maxSize(2048)
+                            ->visible(fn ($get) => $get('feature_image_type') === 'upload'),
+                        Forms\Components\TextInput::make('feature_image_url')
+                            ->label('URL Gambar')
+                            ->url()
+                            ->required()
+                            ->visible(fn ($get) => $get('feature_image_type') === 'url'),
+                    ]),
                 Forms\Components\Select::make('status')
                     ->required()
                     ->options([
@@ -117,8 +138,8 @@ class PostResource extends Resource
             //
             RelationManagers\CategoriesRelationManager::class,
             RelationManagers\TagsRelationManager::class,
-            RelationManagers\CommentsRelationManager::class,
-            RelationManagers\ImagesRelationManager::class,
+            // RelationManagers\CommentsRelationManager::class,
+            // RelationManagers\ImagesRelationManager::class,
 
         ];
     }
