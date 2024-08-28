@@ -23,7 +23,8 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-#use App\Filament\Resources\UserResource\Widget\UserOverview;
+use Rupadana\ApiService\ApiServicePlugin;
+
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -92,15 +93,17 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Property',
                 'Member',
+                'Blog Post',
                 'Setting',
                 'Blog',
                 'Statistic',
 
             ])
 
-
             ->plugins([
-                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+                ApiServicePlugin::make()
+                // \TomatoPHP\FilamentApi\FilamentAPIPlugin::make()
             ]);
 
 
