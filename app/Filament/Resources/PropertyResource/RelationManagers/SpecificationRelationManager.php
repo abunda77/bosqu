@@ -59,7 +59,19 @@ class SpecificationRelationManager extends RelationManager
                     ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('floors')
-                ->label('Jumlah Lantai')
+                    ->label('Jumlah Lantai')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('carpot')
+                    ->label('Carport')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('dining_room')
+                    ->label('Ruang Makan')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('living_room')
+                    ->label('Ruang Tamu')
                     ->required()
                     ->numeric(),
             ]);
@@ -83,6 +95,12 @@ class SpecificationRelationManager extends RelationManager
                 ->label('Jumlah Kamar Mandi'),
                 Tables\Columns\TextColumn::make('floors')
                 ->label('Jumlah Lantai'),
+                Tables\Columns\TextColumn::make('carpot')
+                    ->label('Carport'),
+                Tables\Columns\TextColumn::make('dining_room')
+                    ->label('Ruang Makan'),
+                Tables\Columns\TextColumn::make('living_room')
+                    ->label('Ruang Tamu'),
             ])
             ->filters([
                 //

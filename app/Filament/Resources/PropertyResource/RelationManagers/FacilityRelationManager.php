@@ -41,6 +41,39 @@ class FacilityRelationManager extends RelationManager
                     ])
                     ->required()
                     ->label('Jalur Telepon'),
+                Forms\Components\Select::make('hook')
+                    ->options([
+                        'yes' => 'Yes',
+                        'no' => 'No',
+                    ])
+                    ->required()
+                    ->label('Hook'),
+                Forms\Components\Select::make('condition')
+                    ->options([
+                        'very_good' => 'Sangat Baik',
+                        'good' => 'Baik',
+                        'semi_good' => 'Cukup Baik',
+                        'average' => 'Rata-rata',
+                        'not_good' => 'Kurang Baik',
+                        'bad' => 'Buruk',
+                        'very_bad' => 'Sangat Buruk',
+                    ])
+                    ->required()
+                    ->label('Kondisi'),
+                Forms\Components\Select::make('security')
+                    ->options([
+                        'yes' => 'Ya',
+                        'no' => 'Tidak',
+                    ])
+                    ->required()
+                    ->label('Keamanan'),
+                Forms\Components\Select::make('wastafel')
+                    ->options([
+                        'yes' => 'Ya',
+                        'no' => 'Tidak',
+                    ])
+                    ->required()
+                    ->label('Wastafel'),
                 Forms\Components\TextInput::make('internet')
                     ->maxLength(255)
                     ->required(),
@@ -66,6 +99,23 @@ class FacilityRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('line_phone'),
                 Tables\Columns\TextColumn::make('internet'),
                 Tables\Columns\TextColumn::make('water_source'),
+                Tables\Columns\TextColumn::make('hook')
+                    ->formatStateUsing(fn (string $state): string => $state === 'yes' ? 'Ya' : 'Tidak'),
+                Tables\Columns\TextColumn::make('condition')
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'very_good' => 'Sangat Baik',
+                        'good' => 'Baik',
+                        'semi_good' => 'Cukup Baik',
+                        'average' => 'Rata-rata',
+                        'not_good' => 'Kurang Baik',
+                        'bad' => 'Buruk',
+                        'very_bad' => 'Sangat Buruk',
+                        default => $state,
+                    }),
+                Tables\Columns\TextColumn::make('security')
+                    ->formatStateUsing(fn (string $state): string => $state === 'yes' ? 'Ya' : 'Tidak'),
+                Tables\Columns\TextColumn::make('wastafel')
+                    ->formatStateUsing(fn (string $state): string => $state === 'yes' ? 'Ya' : 'Tidak'),
             ])
             ->filters([
                 //
