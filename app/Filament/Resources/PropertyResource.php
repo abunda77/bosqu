@@ -167,8 +167,21 @@ class PropertyResource extends Resource
 
                 Forms\Components\TextInput::make('coordinates')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('nearby')
-                    ->maxLength(255),
+                Forms\Components\TagsInput::make('nearby')
+                ->nestedRecursiveRules([
+                    'min:3',
+                    'max:50',
+            ]   )
+                ->separator(',')
+                ->suggestions([
+                    'tailwindcss',
+                    'alpinejs',
+                    'laravel',
+                    'livewire',
+                ])
+                ->reorderable()
+                ->splitKeys(['Tab'])
+                ->color('success'),
                 Forms\Components\Select::make('ads')
                     ->required()
                     ->options([
