@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use App\Models\Profile;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -16,7 +17,8 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder; // Added this line
+use Illuminate\Database\Eloquent\Builder; //
+use Illuminate\Database\Eloquent\Model;
 
 class UserResource extends Resource
 {
@@ -65,6 +67,20 @@ class UserResource extends Resource
             ]);
     }
 
+    protected function handleRecordUpdate(Model $record, array $data): Model
+{
+    if (!empty($data['remote_url'])) {
+        $data['avatar'] = Profile::saveImageFromUrl($data['remote_url']);
+        unset($data['remote_url']);
+    }
+
+    $record->update($data);
+
+    return $record;
+}
+
+
+
     public static function table(Table $table): Table
     {
         return $table
@@ -75,9 +91,17 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->label('Username'),
+
                 Tables\Columns\ImageColumn::make('profile.avatar')
                     ->circular()
-                    ->placeholder('empty'),
+                    ->placeholder('empty')
+                    ->getStateUsing(function ($record) {
+                        return $record->profile->avatar ?? $record->profile->remote_url ?? null;
+                    }),
+                    // ->getStateUsing(function ($record) {
+                    //     return $record->avatar ?? $record->remote_url;
+                    // }),
+
                 Tables\Columns\TextColumn::make('email')
                     ->searchable()
                     ->icon('heroicon-m-envelope')
@@ -155,7 +179,10 @@ class UserResource extends Resource
                 ImageEntry::make('profile.avatar')
                     ->label('Avatar')
                     ->placeholder('empty')
-                    ->circular(),
+                    ->circular()
+                    ->getStateUsing(function ($record) {
+                        return $record->profile->avatar ?? $record->profile->remote_url;
+                    }),
                 TextEntry::make('profile.email')
                     ->label('Email')
                     ->placeholder('empty')

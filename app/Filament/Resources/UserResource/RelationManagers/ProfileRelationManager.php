@@ -126,8 +126,8 @@ class ProfileRelationManager extends RelationManager
                     ->image()
                     ->disk('public')
                     ->optimize('webp')
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                    ->directory('avatars'),
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp']),
+                    // ->directory('avatars'),
 
                 Forms\Components\TextInput::make('remote_url')
                     ->label('Avatar URL')

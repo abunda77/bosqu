@@ -58,7 +58,7 @@ class PropertyImage extends Model
         // Simpan ke storage publik
         Storage::put($path, $contents);
 
-        return 'property_imagess/' . $name; // Simpan path relatif
+        return 'property_images/' . $name; // Simpan path relatif
     }
 
     // Bootstrap model

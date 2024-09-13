@@ -27,7 +27,7 @@ class ImagesRelationManager extends RelationManager
                     ->optimize('webp')
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                     ->default([])
-                    ->directory('property_images')
+                    // ->directory('property_images')
                     // ->rules(['array'])
                     ->maxSize(2048),
 
