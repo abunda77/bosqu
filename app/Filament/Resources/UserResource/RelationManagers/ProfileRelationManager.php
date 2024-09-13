@@ -4,6 +4,7 @@ namespace App\Filament\Resources\UserResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Profile;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,7 @@ use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 use Ysfkaya\FilamentPhoneInput\Tables\PhoneColumn;
 use Ysfkaya\FilamentPhoneInput\Infolists\PhoneEntry;
 use Ysfkaya\FilamentPhoneInput\PhoneInputNumberType;
+use Illuminate\Database\Eloquent\Model;
 
 class ProfileRelationManager extends RelationManager
 {
@@ -120,7 +122,21 @@ class ProfileRelationManager extends RelationManager
                     ->required(),
                 Forms\Components\DatePicker::make('birthday'),
 
-                Forms\Components\FileUpload::make('avatar'),
+                Forms\Components\FileUpload::make('avatar')
+                    ->image()
+                    ->disk('public')
+                    ->directory('avatars'),
+
+                Forms\Components\TextInput::make('remote_url')
+                    ->label('Avatar URL')
+                    ->url()
+                    ->placeholder('https://example.com/image.jpg')
+                    ->helperText('Alternatively, you can provide a URL to an image'),
+
+
+
+
+
                 Forms\Components\KeyValue::make('social_media')
                     ->label('Social Media')
                     ->keyLabel('Nama Platform')
@@ -136,6 +152,17 @@ class ProfileRelationManager extends RelationManager
             ]);
     }
 
+protected function handleRecordUpdate(Model $record, array $data): Model
+{
+    if (!empty($data['remote_url'])) {
+        $data['avatar'] = Profile::saveImageFromUrl($data['remote_url']);
+        unset($data['remote_url']);
+    }
+
+    $record->update($data);
+
+    return $record;
+}
     public function table(Table $table): Table
     {
         return $table
@@ -145,7 +172,10 @@ class ProfileRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('last_name'),
                 Tables\Columns\TextColumn::make('email'),
                 Tables\Columns\ImageColumn::make('avatar')
-                ->circular(),
+                    ->circular()
+                    ->getStateUsing(function ($record) {
+                        return $record->avatar ?? $record->remote_url;
+                    }),
                 Tables\Columns\TextColumn::make('phone'),
                 Tables\Columns\TextColumn::make('gender'),
             ])
