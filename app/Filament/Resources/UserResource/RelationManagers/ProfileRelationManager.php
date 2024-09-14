@@ -4,7 +4,7 @@ namespace App\Filament\Resources\UserResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Profile;
+
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +19,7 @@ use Ysfkaya\FilamentPhoneInput\Tables\PhoneColumn;
 use Ysfkaya\FilamentPhoneInput\Infolists\PhoneEntry;
 use Ysfkaya\FilamentPhoneInput\PhoneInputNumberType;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Profile;
 
 class ProfileRelationManager extends RelationManager
 {
