@@ -61,7 +61,8 @@ class ImagesRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('property_id'),
-                Tables\Columns\TextColumn::make('image_url')
+                Tables\Columns\ImageColumn::make('image_url')
+                    -> circular()
                     ->getStateUsing(function ($record) {
                         return $record->image_url ?? $record->image_remote_url;
                     }),

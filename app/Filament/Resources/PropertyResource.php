@@ -27,6 +27,8 @@ use App\Filament\Resources\PropertyResource\RelationManagers;
 use IbrahimBougaoua\FilamentRatingStar\Columns\RatingStarColumn;
 use Filament\Forms\Components\TextInput\Mask; // Tambahkan import ini
 use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Notifications\Notification;
+use Illuminate\Database\QueryException;
 
 
 class PropertyResource extends Resource
@@ -331,10 +333,44 @@ class PropertyResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->action(function (Property $record) {
+                        try {
+                            $record->delete();
+                            Notification::make()
+                                ->title('Properti Berhasil Dihapus')
+                                ->success()
+                                ->send();
+                        } catch (QueryException $e) {
+                            Notification::make()
+                                ->title('Penghapusan Gagal')
+                                ->body('Properti tidak dapat dihapus karena masih memiliki relasi dengan data lain.')
+                                ->danger()
+                                ->send();
+                        }
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->action(function ($records) {
+                            try {
+                                $records->each->delete();
+                            } catch (QueryException $e) {
+                                Notification::make()
+                                    ->title('Penghapusan Gagal')
+                                    ->body('Properti tidak dapat dihapus karena masih memiliki relasi dengan data lain.')
+                                    ->danger()
+                                    ->send();
+
+                                return;
+                            }
+
+                            Notification::make()
+                                ->title('Properti Berhasil Dihapus')
+                                ->success()
+                                ->send();
+                        }),
                 ]),
             ]);
     }
