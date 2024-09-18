@@ -20,6 +20,7 @@ use Ysfkaya\FilamentPhoneInput\Infolists\PhoneEntry;
 use Ysfkaya\FilamentPhoneInput\PhoneInputNumberType;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Profile;
+use Illuminate\Support\Facades\Log; // Tambahkan ini
 
 class ProfileRelationManager extends RelationManager
 {
@@ -125,9 +126,9 @@ class ProfileRelationManager extends RelationManager
 
                 Forms\Components\FileUpload::make('avatar')
                     ->image()
-                    ->disk('public')
+                    ->default([])
                     ->optimize('webp')
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp']),
+                    ->acceptedFileTypes(['image/jpeg', 'image/jpg','image/png', 'image/webp']),
                     // ->directory('avatars'),
 
                 Forms\Components\TextInput::make('remote_url')
@@ -174,8 +175,7 @@ protected function handleRecordUpdate(Model $record, array $data): Model
                 Tables\Columns\TextColumn::make('first_name'),
                 Tables\Columns\TextColumn::make('last_name'),
                 Tables\Columns\TextColumn::make('email'),
-                Tables\Columns\ImageColumn::make('avatar')
-                    ->circular()
+                Tables\Columns\TextColumn::make('avatar')
                     ->getStateUsing(function ($record) {
                         return $record->avatar ?? $record->remote_url;
                     }),
@@ -186,7 +186,8 @@ protected function handleRecordUpdate(Model $record, array $data): Model
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->visible(fn ($livewire) => !$livewire->getOwnerRecord()->profile()->exists()),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

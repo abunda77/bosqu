@@ -73,13 +73,22 @@ class Profile extends Model
     {
         // Download gambar dari URL
         $contents = file_get_contents($url);
-        $name = Str::random(10) . '.jpg';
-        $path = 'public/avatars/' . $name;
 
-        // Simpan ke storage publik
-        Storage::put($path, $contents);
+        // Buat nama file acak dengan ekstensi .webp
+        $name = Str::random(10) . '.webp';
+        $path = 'public/' . $name;
 
-        return 'avatars/' . $name; // Simpan path relatif
+        // Konversi gambar ke format WebP
+        $image = imagecreatefromstring($contents);
+        ob_start();
+        imagewebp($image, null, 80); // Kualitas 80%
+        $webpContents = ob_get_clean();
+        imagedestroy($image);
+
+        // Simpan ke storage publik dalam format WebP
+        Storage::put($path, $webpContents);
+
+        return '' . $name; // Simpan path relatif
     }
 
     // Bootstrap model

@@ -92,9 +92,10 @@ class UserResource extends Resource
                     ->searchable()
                     ->label('Username'),
 
-                Tables\Columns\ImageColumn::make('profile.avatar')
-                    ->circular()
-                    ->placeholder('empty')
+                Tables\Columns\TextColumn::make('profile.avatar')
+                    // ->circular()
+                    // ->disk('public')
+                    // ->placeholder('kosong')
                     ->getStateUsing(function ($record) {
                         return $record->profile->avatar ?? $record->profile->remote_url ?? null;
                     }),
