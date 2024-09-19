@@ -14,13 +14,14 @@ class PaginationHandler extends Handlers {
     public function handler()
     {
         $query = static::getEloquentQuery();
-        // $model = static::getModel();
+        $model = static::getModel();
 
         $query = QueryBuilder::for($query)
         ->allowedFields($this->getAllowedFields())
         ->allowedSorts($this->getAllowedSorts())
         ->allowedFilters($this->getAllowedFilters())
         ->allowedIncludes($this->getAllowedIncludes())
+        ->latest()
         ->paginate(request()->query('per_page'))
         ->appends(request()->query());
 
@@ -29,17 +30,17 @@ class PaginationHandler extends Handlers {
 
     protected function getAllowedFields()
     {
-        return [];
+        return ['id', 'title', 'body', 'created_at', 'updated_at'];
     }
 
     protected function getAllowedSorts()
     {
-        return [];
+        return ['created_at', 'updated_at'];
     }
 
     protected function getAllowedFilters()
     {
-        return [];
+        return ['title', 'body'];
     }
 
     protected function getAllowedIncludes()
