@@ -39,32 +39,15 @@ class PostResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->disabled(),
-                Forms\Components\Group::make()
-                    ->schema([
-                        Forms\Components\Radio::make('feature_image_type')
-                            ->label('Jenis Gambar Fitur')
-                            ->options([
-                                'upload' => 'Unggah Gambar',
-                                'url' => 'Masukkan URL',
-                            ])
-                            ->required()
-                            ->inline()
-                            ->default('upload'),
-                        Forms\Components\FileUpload::make('feature_image')
-                            ->label('Unggah Gambar')
-                            ->image()
-                            ->imageEditor()
-                            ->required()
-                            ->optimize('webp')
-                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                            ->maxSize(2048)
-                            ->visible(fn ($get) => $get('feature_image_type') === 'upload'),
-                        Forms\Components\TextInput::make('feature_image_url')
-                            ->label('URL Gambar')
-                            ->url()
-                            ->required()
-                            ->visible(fn ($get) => $get('feature_image_type') === 'url'),
-                    ]),
+                Forms\Components\FileUpload::make('feature_image')
+                    ->label('Gambar Fitur')
+                    ->image()
+
+
+                    ->optimize('webp')
+                    ->acceptedFileTypes(['image/jpeg', 'image/jpg','image/png', 'image/webp'])
+                    ,
+
                 Forms\Components\Select::make('status')
                     ->required()
                     ->options([
@@ -72,7 +55,7 @@ class PostResource extends Resource
                         'published' => 'Published',
                         'private' => 'Private',
                     ]),
-                RichEditor::make('body')
+                Forms\Components\RichEditor::make('body')
                     ->required()
                     ->maxLength(65535),
                 Forms\Components\Select::make('admin_id')
