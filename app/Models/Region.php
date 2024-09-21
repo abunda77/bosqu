@@ -78,4 +78,43 @@ class Region extends Model
                 return null;
         }
     }
+    public static function getAllowedFields()
+    {
+        return [
+            'code',
+            'name',
+            'level',
+            // Tambahkan field lain yang diizinkan di sini
+        ];
+    }
+
+    public static function getAllowedSorts()
+    {
+        return [
+            'code',
+            'name',
+            'level',
+            // Tambahkan field yang diizinkan untuk pengurutan di sini
+        ];
+    }
+
+    public static function getAllowedFilters()
+    {
+        return [
+            'code',
+            'name',
+            'level',
+            // Tambahkan field yang diizinkan untuk filter di sini
+        ];
+    }
+
+    public static function getAllowedIncludes()
+    {
+        return [
+            'parent',
+            'children',
+            'properties',
+            // Tambahkan relasi yang diizinkan untuk include di sini
+        ];
+    }
 }
