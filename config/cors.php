@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*', 'localhost', 'https://home.serverdata.my.id/'],
+    'allowed_origins' => ['*', 'localhost', 'http://localhost:4321', 'https://home.serverdata.my.id/'],
 
     'allowed_origins_patterns' => [],
 
@@ -29,6 +29,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];
