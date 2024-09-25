@@ -16,7 +16,7 @@ return [
     ],
     'route' => [
         'panel_prefix' => false,
-        'use_resource_middlewares' => false,
+        'use_resource_middlewares' => true,
     ],
     'tenancy' => [
         'enabled' => false,

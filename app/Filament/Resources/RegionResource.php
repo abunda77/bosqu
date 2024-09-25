@@ -21,6 +21,11 @@ class RegionResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Setting';
 
+    protected $middleware = [
+        // ...
+        \Illuminate\Http\Middleware\HandleCors::class,
+    ];
+
     public static function form(Form $form): Form
     {
         return $form
@@ -84,4 +89,6 @@ class RegionResource extends Resource
     {
         return static::getModel()::count();
     }
+
+
 }
