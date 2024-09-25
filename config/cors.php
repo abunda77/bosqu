@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['*', 'localhost', 'https://home.serverdata.my.id'],
 
     'allowed_origins_patterns' => [],
 
