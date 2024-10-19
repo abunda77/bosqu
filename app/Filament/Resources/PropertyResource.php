@@ -29,6 +29,8 @@ use Filament\Forms\Components\TextInput\Mask; // Tambahkan import ini
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Notifications\Notification;
 use Illuminate\Database\QueryException;
+use Cheesegrits\FilamentGoogleMaps\Fields\Map;
+use Cheesegrits\FilamentGoogleMaps\Columns\MapColumn;
 
 
 class PropertyResource extends Resource
@@ -86,9 +88,8 @@ class PropertyResource extends Resource
                         'yearly' => 'Yearly',
                         'weekly' => 'Weekly',
                     ]),
-                Forms\Components\TextInput::make('address')
-                    ->required()
-                     ->maxLength(255),
+
+
 
 
                 Select::make('province_id')
@@ -167,10 +168,74 @@ class PropertyResource extends Resource
 
 
 
-                Forms\Components\TextInput::make('coordinates')
-                    ->maxLength(255),
-                Forms\Components\TagsInput::make('nearby')
-                ->nestedRecursiveRules([
+                     //Location Coordinates Maps
+
+                    Map::make('location')
+                    ->mapControls([
+                        'mapTypeControl'    => true,
+                        'scaleControl'      => true,
+                        'streetViewControl' => true,
+                        'rotateControl'     => true,
+                        'fullscreenControl' => true,
+                        'searchBoxControl'  => false,
+                        'zoomControl'       => false,
+                    ])
+                    ->height(fn () => '400px')
+                    ->defaultZoom(5)
+                    ->autocomplete('address_autocomplete')
+                    ->autocompleteReverse(true)
+                    ->reverseGeocode([
+                        'street' => '%n %S',
+                        'city' => '%L',
+                        'state' => '%A1',
+                        'zip' => '%z',
+                    ])
+                    ->debug(true)
+                    ->defaultLocation([-6.8346692589851346, 107.27804653085538])
+                    ->draggable(true)
+                    ->clickable(true)
+                    ->geolocate()
+                    ->geolocateLabel('Dapatkan Lokasi')
+                    ->geolocateOnLoad(true, false)
+                    ->layers([
+                        'https://googlearchive.github.io/js-v2-samples/ggeoxml/cta.kml',
+                    ])
+                    ->geoJson('https://fgm.test/storage/AGEBS01.geojson')
+                    ->geoJsonContainsField('geojson')
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        if ($state) {
+                            $set('lat', $state['lat']);
+                            $set('lng', $state['lng']);
+                            $set('coordinates', $state['lat'] . ',' . $state['lng']);
+                        }
+                    }),
+
+                    Forms\Components\TextInput::make('address_autocomplete')
+                    ->label("Alamat AutoComplete")
+                    ->maxLength(255)
+                    ->disabled(false)
+                    ->dehydrated(false),
+
+                    Forms\Components\TextInput::make('lat')
+                    ->required()
+                    ->label("Latitude")
+                    ->disabled(),
+
+                    Forms\Components\TextInput::make('lng')
+                    ->required()
+                    ->label("Longitude")
+                    ->disabled(),
+
+                    Forms\Components\TextInput::make('coordinates')
+                    ->label('Koordinat')
+                    ->disabled(),
+
+
+
+
+            // Nearby
+                    Forms\Components\TagsInput::make('nearby')
+                    ->nestedRecursiveRules([
                     'min:3',
                     'max:50',
             ]   )
@@ -246,11 +311,54 @@ class PropertyResource extends Resource
                     ->numeric(decimalPlaces:0)
                     ->sortable(),
 
-                    Tables\Columns\TextColumn::make('coordinates')
-                    ->label('Lokasi')
+                Tables\Columns\TextColumn::make('coordinates')
+                    ->label('Koordinat')
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                    Tables\Columns\TextColumn::make('period')
+                Tables\Columns\TextColumn::make('address_autocomplete')
+                    ->label('Alamat Autocomplete')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                Tables\Columns\TextColumn::make('location')
+                    ->label('Lokasi')
+                    ->formatStateUsing(function (Property $record) {
+                        $location = $record->getLocationAttribute();
+                        return "Lat: {$location['lat']}, Lng: {$location['lng']}";
+                    })
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                Tables\Columns\TextColumn::make('lat')
+                    ->label('Lat'),
+
+                Tables\Columns\TextColumn::make('lng')
+                    ->label('Lng'),
+
+
+                // Tables\Columns\TextColumn::make('lng')
+                //         ->label('Longitude')
+                //         ->state(function (Property $record) {
+                //             $coordinates = explode(',', $record->coordinates);
+                //             return $coordinates[1] ?? null;
+                //         })
+                //         ->toggleable(isToggledHiddenByDefault: true),
+
+
+
+                // MapColumn::make('location')
+                //     ->extraAttributes([
+                //         'class' => 'property-map'
+                //     ])
+                //     ->extraImgAttributes(
+                //         fn ($record): array => ['title' => $record->lat . ',' . $record->lng]
+                //     )
+                //     ->height('150')
+                //     ->width('250')
+                //     ->type('satellite')
+                //     ->zoom(15)
+                //     ->label('Lokasi')
+                //     ->toggleable(isToggledHiddenByDefault: true),
+
+                Tables\Columns\TextColumn::make('period')
                 ->badge()
                 ->label('Period')
                 ->colors([

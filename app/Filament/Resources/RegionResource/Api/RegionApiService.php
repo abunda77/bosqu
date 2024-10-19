@@ -4,6 +4,7 @@ namespace App\Filament\Resources\RegionResource\Api;
 use Rupadana\ApiService\ApiService;
 use App\Filament\Resources\RegionResource;
 use Illuminate\Routing\Router;
+use Illuminate\Http\Middleware\HandleCors;
 
 
 class RegionApiService extends ApiService
