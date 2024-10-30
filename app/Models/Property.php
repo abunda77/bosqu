@@ -103,6 +103,7 @@ class Property extends Model
         {
             $this->attributes['lat'] = $location['lat'];
             $this->attributes['lng'] = $location['lng'];
+            $this->attributes['coordinates'] = $location['lat'] . ',' . $location['lng'];
             unset($this->attributes['location']);
         }
     }
@@ -119,4 +120,27 @@ class Property extends Model
     {
         return 'location';
     }
+
+    public function setCoordinatesAttribute($value): void
+    {
+        $this->attributes['coordinates'] = $this->lat . ',' . $this->lng;
+    }
+
+
+
+    public function addLocationValue(float $lat, float $lng): void
+    {
+        $this->attributes['lat'] = $lat;
+        $this->attributes['lng'] = $lng;
+        $this->attributes['coordinates'] = $lat . ',' . $lng;
+        $this->attributes['location'] = [
+            'lat' => $lat,
+            'lng' => $lng
+        ];
+    }
+
+    // public function setAddressAttribute($value): void
+    // {
+    //     $this->attributes['address'] = $value;
+    // }
 }

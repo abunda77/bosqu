@@ -170,6 +170,8 @@ class PropertyResource extends Resource
 
                      //Location Coordinates Maps
 
+
+
                     Map::make('location')
                     ->mapControls([
                         'mapTypeControl'    => true,
@@ -183,7 +185,12 @@ class PropertyResource extends Resource
                     ->height(fn () => '400px')
                     ->defaultZoom(5)
                     ->autocomplete('address_autocomplete')
-                    ->autocompleteReverse(true)
+                    // ->afterStateUpdated(function ($state, callable $set) {
+                    //     if ($state) {
+                    //         $set('address_autocomplete', $state);
+                    //     }
+                    // })
+
                     ->reverseGeocode([
                         'street' => '%n %S',
                         'city' => '%L',
@@ -191,7 +198,7 @@ class PropertyResource extends Resource
                         'zip' => '%z',
                     ])
                     ->debug(true)
-                    ->defaultLocation([-6.8346692589851346, 107.27804653085538])
+                    ->defaultLocation([-6.9887196,110.4565127])
                     ->draggable(true)
                     ->clickable(true)
                     ->geolocate()
@@ -209,12 +216,24 @@ class PropertyResource extends Resource
                             $set('coordinates', $state['lat'] . ',' . $state['lng']);
                         }
                     }),
-
                     Forms\Components\TextInput::make('address_autocomplete')
                     ->label("Alamat AutoComplete")
                     ->maxLength(255)
                     ->disabled(false)
                     ->dehydrated(false),
+                    // ->afterStateUpdated(function ($state, callable $set) {
+                    //     $set('address', $state);
+                    // }),
+
+                    Forms\Components\TextInput::make('address')
+                    ->label("Alamat")
+                    ->maxLength(255)
+                    ->disabled(false),
+                    // ->afterStateUpdated(function ($state, callable $set) {
+                    //     $set('address_autocomplete', $state);
+                    // }),
+
+
 
                     Forms\Components\TextInput::make('lat')
                     ->required()
@@ -229,6 +248,8 @@ class PropertyResource extends Resource
                     Forms\Components\TextInput::make('coordinates')
                     ->label('Koordinat')
                     ->disabled(),
+
+
 
 
 
