@@ -238,16 +238,16 @@ class PropertyResource extends Resource
                     Forms\Components\TextInput::make('lat')
                     ->required()
                     ->label("Latitude")
-                    ->disabled(),
+                    ->disabled(false),
 
                     Forms\Components\TextInput::make('lng')
                     ->required()
                     ->label("Longitude")
-                    ->disabled(),
+                    ->disabled(false),
 
                     Forms\Components\TextInput::make('coordinates')
                     ->label('Koordinat')
-                    ->disabled(),
+                    ->disabled(false),
 
 
 
