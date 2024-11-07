@@ -227,6 +227,7 @@ class PropertyResource extends Resource
 
                     Forms\Components\TextInput::make('address')
                     ->label("Alamat")
+                    ->required()
                     ->maxLength(255)
                     ->disabled(false),
                     // ->afterStateUpdated(function ($state, callable $set) {
