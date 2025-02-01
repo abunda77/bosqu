@@ -16,6 +16,7 @@
         "dedoc/scramble": "*",
         "filament/filament": "^3.2",
         "ibrahimbougaoua/filament-rating-star": "^1.0",
+        "joaopaulolndev/filament-edit-env": "^1.0",
         "joshembling/image-optimizer": "^1.4",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
