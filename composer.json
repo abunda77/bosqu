@@ -13,6 +13,7 @@
         "barryvdh/laravel-debugbar": "^3.13",
         "bezhansalleh/filament-shield": "^3.2",
         "cheesegrits/filament-google-maps": "^3.0",
+        "dedoc/scramble": "*",
         "filament/filament": "^3.2",
         "ibrahimbougaoua/filament-rating-star": "^1.0",
         "joshembling/image-optimizer": "^1.4",

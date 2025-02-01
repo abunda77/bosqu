@@ -12,14 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('post_posts', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('body')->comment('Content of the post');
-            $table->string('feature_image')->comment('URL of featured image');
-            $table->string('slug')->unique();
-            $table->foreignId('admin_id')->constrained('admins');
-            $table->enum('status', ['draft', 'published', 'private']);
-            $table->timestamps();
+           $table->id();
+$table->string('title');
+$table->text('body')->comment('Content of the post');
+$table->string('feature_image')->comment('URL of featured image');
+$table->string('slug')->unique();
+$table->foreignId('admin_id')->constrained()->onDelete('cascade');
+
+$table->enum('status', ['draft', 'published', 'private']);
+$table->timestamps();
         });
 
         Schema::create('post_post_categories', function (Blueprint $table) {

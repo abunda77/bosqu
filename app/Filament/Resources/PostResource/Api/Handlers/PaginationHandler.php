@@ -6,9 +6,10 @@ use Rupadana\ApiService\Http\Handlers;
 use Spatie\QueryBuilder\QueryBuilder;
 use App\Filament\Resources\PostResource;
 
-class PaginationHandler extends Handlers {
-    public static string | null $uri = '/';
-    public static string | null $resource = PostResource::class;
+class PaginationHandler extends Handlers
+{
+    public static string|null $uri = '/';
+    public static string|null $resource = PostResource::class;
     public static bool $public = true;
 
     public function handler()
@@ -17,34 +18,14 @@ class PaginationHandler extends Handlers {
         $model = static::getModel();
 
         $query = QueryBuilder::for($query)
-        ->allowedFields($this->getAllowedFields())
-        ->allowedSorts($this->getAllowedSorts())
-        ->allowedFilters($this->getAllowedFilters())
-        ->allowedIncludes($this->getAllowedIncludes())
-        ->latest()
-        ->paginate(request()->query('per_page'))
-        ->appends(request()->query());
+            ->allowedFields($model::getAllowedFields() ?? [])
+            ->allowedSorts($model::getAllowedSorts() ?? [])
+            ->allowedFilters($model::getAllowedFilters() ?? [])
+            ->allowedIncludes($model::getAllowedIncludes() ?? [])
+            ->latest()
+            ->paginate(request()->query('per_page'))
+            ->appends(request()->query());
 
         return static::getApiTransformer()::collection($query);
-    }
-
-    protected function getAllowedFields()
-    {
-        return ['id', 'title', 'body', 'created_at', 'updated_at'];
-    }
-
-    protected function getAllowedSorts()
-    {
-        return ['created_at', 'updated_at'];
-    }
-
-    protected function getAllowedFilters()
-    {
-        return ['title', 'body'];
-    }
-
-    protected function getAllowedIncludes()
-    {
-        return [];
     }
 }
